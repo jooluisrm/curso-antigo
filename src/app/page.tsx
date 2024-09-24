@@ -1,29 +1,32 @@
 "use client"
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { Posts } from "@/Types/Posts";
+import { useState } from "react";
 
 export const Page = () => {
-    const [name, setName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [fullName, setFullName] = useState('');
 
-    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
+    const [posts, setPosts] = useState<Posts[]>([]);
+
+    const handleLoadButton = () => {
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                setPosts(json);
+            })
     }
-    const handleLastNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-    }
-
-    useEffect(() => {
-        setFullName(`${name} ${lastName}`)
-    }, [name, lastName]);
-
     return (
-        <div className="bg-white text-black h-screen w-full">
-            <div className="flex flex-col max-w-96">
-                <input type="text" value={name} onChange={handleNameChange} placeholder="Digite seu nome" />
-                <input type="text" value={lastName} onChange={handleLastNameChange} placeholder="Digite seu sobrenome" />
-                <p>Nome Completo: {fullName}</p>
+        <div className="bg-white text-black h-full w-full">
+            <button className="block bg-blue-400 p-2 rounded-md" onClick={handleLoadButton}>Carregar Posts</button>
+            Total de Posts: {posts.length}
+            <div>
+                {posts.map((post, index) => (
+                    <div className="bg-slate-500 my-3" key={index}>
+                        <h1 className="text-4xl">{post.title}</h1>
+                        <div>{post.body}</div>
+                    </div>
+                ))}
             </div>
         </div>
 

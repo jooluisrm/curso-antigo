@@ -24,11 +24,18 @@ export const Page = () => {
     }, []);
 
     const handleLoadButton = async () => {
-        setLoading(true);
-        let response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        let json = await response.json();
-        setLoading(false);
-        setPosts(json);
+        try {
+            setLoading(true);
+            let response = await fetch('https://jsonplaceholder.typicode.com/posts');
+            let json = await response.json();
+            setLoading(false);
+            setPosts(json);
+        } catch (error) {
+            setLoading(false);
+            setPosts([])
+            alert('Erro, tente mais tarde');
+        }
+
     }
     return (
         <div className="bg-white text-black min-h-screen w-full">
@@ -38,7 +45,7 @@ export const Page = () => {
                 <div>Carregando!!!</div>
             }
 
-            {!loading &&
+            {!loading && posts.length > 0 &&
                 <>
                     <div>Total de Posts: {posts.length}</div>
                     <div>
@@ -50,6 +57,9 @@ export const Page = () => {
                         ))}
                     </div>
                 </>
+            }
+            {!loading && posts.length === 0 && 
+                <div>tente novamente mais tarde</div>
             }
         </div>
 

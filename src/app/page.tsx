@@ -1,5 +1,6 @@
 "use client"
 
+import { Api } from "@/api";
 import { PostForm } from "@/components/postForm";
 import { PostItem } from "@/components/postItem";
 import { Posts } from "@/Types/Posts";
@@ -17,10 +18,10 @@ export const Page = () => {
     const handleLoadButton = async () => {
         try {
             setLoading(true);
-            let response = await fetch('https://jsonplaceholder.typicode.com/posts');
-            let json = await response.json();
+            let json = await Api.getAllPosts();
             setLoading(false);
             setPosts(json);
+            
         } catch (error) {
             setLoading(false);
             setPosts([])
@@ -30,21 +31,14 @@ export const Page = () => {
     }
 
     const handleAddPost = async (title: string, body: string) => {
-        let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: "POST",
-            body: JSON.stringify({
-                userId: 1,
-                title,
-                body
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        let json = await response.json();
-        setPosts([json, ...posts]);
+        let json = await Api.addNewPost(title, body, 1);
+        if(json.id) {
+            alert('Post add')
+            setPosts([json, ...posts]);
+        }
 
     }
+    
     return (
         <div className="bg-white text-black min-h-screen w-full">
             <button className="block bg-blue-400 p-2 rounded-md" onClick={handleLoadButton}>Carregar Posts</button>

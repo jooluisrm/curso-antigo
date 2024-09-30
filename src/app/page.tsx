@@ -3,6 +3,7 @@
 import { Api } from "@/api";
 import { PostForm } from "@/components/postForm";
 import { PostItem } from "@/components/postItem";
+import { PageReducer } from "@/Reducers Aula/pageReducer";
 import { Posts } from "@/Types/Posts";
 import { useEffect, useState } from "react";
 
@@ -41,6 +42,8 @@ export const Page = () => {
     
     return (
         <div className="bg-white text-black min-h-screen w-full">
+            <PageReducer/>
+            
             <button className="block bg-blue-400 p-2 rounded-md" onClick={handleLoadButton}>Carregar Posts</button>
 
             {loading &&
@@ -60,6 +63,8 @@ export const Page = () => {
             {!loading && posts.length === 0 &&
                 <div>tente novamente mais tarde</div>
             }
+
+            
         </div>
 
     );

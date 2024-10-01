@@ -6,7 +6,7 @@ export const RealReducer = () => {
     const [nameInput, setNameInput] = useState('');
 
     const handleAddButton = () => {
-        if(nameInput) {
+        if (nameInput) {
             dispatch({
                 type: 'ADD',
                 payload: {
@@ -16,23 +16,39 @@ export const RealReducer = () => {
             setNameInput('');
         }
     }
+    const handleOrderButton = () => {
+        dispatch({
+            type: 'ORDER'
+        })
+    }
 
     return (
         <div className="p-5">
-            <input 
+            <input
                 className="border-2"
-                type="text" 
+                type="text"
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
             />
             <button onClick={handleAddButton}>Adicionar</button>
 
             <hr />
-            
+
+            <button onClick={handleOrderButton}>Ordenar</button>
+            <br />
+
             Lista de Pessoas:
             <ul>
                 {list.map((item, index) => (
-                    <li key={index}>{item.name}</li>
+                    <li key={index}>
+                        {item.name}
+                        <button onClick={() => dispatch({
+                            type: 'DEL',
+                            payload: {
+                                id: item.id
+                            }
+                        })}>[ deletar ]</button>
+                    </li>
                 ))}
             </ul>
         </div>

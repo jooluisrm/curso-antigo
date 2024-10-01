@@ -5,6 +5,7 @@ import { PostForm } from "@/components/postForm";
 import { PostItem } from "@/components/postItem";
 import { PageReducer } from "@/Reducers Aula/pageReducer";
 import { Posts } from "@/Types/Posts";
+import { RealReducer } from "@/Uso real Reducer/realReducer";
 import { useEffect, useState } from "react";
 
 export const Page = () => {
@@ -22,7 +23,7 @@ export const Page = () => {
             let json = await Api.getAllPosts();
             setLoading(false);
             setPosts(json);
-            
+
         } catch (error) {
             setLoading(false);
             setPosts([])
@@ -33,17 +34,18 @@ export const Page = () => {
 
     const handleAddPost = async (title: string, body: string) => {
         let json = await Api.addNewPost(title, body, 1);
-        if(json.id) {
+        if (json.id) {
             alert('Post add')
             setPosts([json, ...posts]);
         }
 
     }
-    
+
     return (
         <div className="bg-white text-black min-h-screen w-full">
-            <PageReducer/>
-            
+            <RealReducer />
+            <PageReducer />
+
             <button className="block bg-blue-400 p-2 rounded-md" onClick={handleLoadButton}>Carregar Posts</button>
 
             {loading &&
@@ -64,7 +66,7 @@ export const Page = () => {
                 <div>tente novamente mais tarde</div>
             }
 
-            
+
         </div>
 
     );

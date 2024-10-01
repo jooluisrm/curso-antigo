@@ -1,11 +1,9 @@
+import { useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 type Person = {
     id: string;
     name: string;
-}
-type reducerState = {
-
 }
 type ActionType = {
     type: string;
@@ -21,10 +19,12 @@ const reducer = (state: Person[], action: ActionType) => {
     switch (action.type) {
         case 'ADD':
             if (action.payload?.name) {
-                state.push({
+                const newState = [...state];
+                newState.push({
                     id: uuidv4(),
                     name: action.payload?.name
-                })
+                });
+                return newState;
             }
             break;
         case 'DEL':
@@ -41,5 +41,5 @@ const reducer = (state: Person[], action: ActionType) => {
 }
 
 export const usePeopleList = () => {
-
+    return useReducer(reducer, initialState);
 }
